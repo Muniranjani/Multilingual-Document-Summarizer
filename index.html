@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honour Project — Document Summarizer</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Use absolute path to avoid relative serving issues -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <div class="glass-card" role="main">
+            <header class="app-header">
+                <h1 class="app-title"><i class="fas fa-robot" aria-hidden="true"></i> Document Summarizer</h1>
+                <p class="project-subtitle">Honour Project — Multilingual • Elegant, fast summaries</p>
+            </header>
+            <!-- Error message container -->
+            <div id="errorContainer" class="error-container" role="alert" aria-live="polite"></div>
+            <div class="stats-container" role="complementary">
+                <div class="stat">
+                    <div class="stat-circle">
+                        <span id="wordCount" aria-label="Word count">0</span>
+                    </div>
+                    <p>Words</p>
+                </div>
+                <div class="stat">
+                    <div class="stat-circle">
+                        <span id="summaryRatio">0%</span>
+                    </div>
+                    <p>Compression</p>
+                </div>
+            </div>
+        
+            <div class="input-group">
+                <div class="input-tabs">
+                    <button class="tab-btn active" data-tab="text">
+                        <i class="fas fa-pen"></i>
+                        <span>Text Input</span>
+                    </button>
+                    <button class="tab-btn" data-tab="file">
+                        <i class="fas fa-file-upload"></i>
+                        <span>File Upload</span>
+                    </button>
+                </div>
+                
+                <div class="tab-content" id="textInput">
+                    <textarea id="inputText" placeholder="Paste your text here to summarize..." class="glass-input"></textarea>
+                </div>
+                
+                <div class="tab-content hidden" id="fileInput">
+                    <div class="file-drop-zone" id="dropZone">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop your files here or</p>
+                        <label for="fileUpload" class="upload-btn">Choose Files</label>
+                        <input type="file" id="fileUpload" accept=".txt,.md,.rtf,.docx,.doc,.pdf,.png,.jpg,.jpeg,.gif,.bmp,.tiff" multiple hidden>
+                        <p class="file-types">Supported files: TXT, DOCX, PDF, Images</p>
+                    </div>
+                    <div id="fileList" class="file-list">
+                        <!-- File items will be added here dynamically -->
+                        <div class="file-item template" style="display: none;">
+                            <div class="file-info">
+                                <div class="file-icon">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <div class="file-details">
+                                    <div class="file-name">No file selected</div>
+                                    <div class="file-meta">0 KB</div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                    <div class="file-status">Ready to process</div>
+                                </div>
+                            </div>
+                            <div class="file-actions">
+                                <label class="checkbox-container" title="Select for batch processing">
+                                    <input type="checkbox" class="file-select">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <button class="icon-btn remove" title="Remove file">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="processing-options">
+                    <button id="processBtn" class="primary-btn">
+                        <i class="fas fa-cogs"></i>
+                        Process Selected Files
+                    </button>
+                    <div class="option-group">
+                        <label for="targetLanguage">Target Language</label>
+                        <select id="targetLanguage" class="glass-select">
+                            <option value="" disabled selected>Select output language</option>
+                            <!-- Language options will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label>Processing Options</label>
+                        <div class="option-controls">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="processInBatch">
+                                <span class="checkmark"></span>
+                                Process files in batch
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="preserveFormatting">
+                                <span class="checkmark"></span>
+                                Preserve formatting
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button id="summarizeBtn" class="glass-button">
+                        <i class="fas fa-magic"></i> Summarize
+                    </button>
+                </div>
+            </div>
+            <div class="output-section">
+                <div class="output-header">
+                    <h3><i class="fas fa-file-alt"></i> Summary</h3>
+                    <div class="output-actions">
+                        <button id="copyBtn" class="icon-btn" title="Copy to clipboard">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button id="downloadBtn" class="icon-btn" title="Download summary">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="outputText" class="output-box glass-panel">
+                    <div class="summary-content"></div>
+                </div>
+                <div class="loader hidden" id="loading">
+                    <div class="spinner"></div>
+                    <p>Processing your request...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Processing your request...</p>
+        </div>
+
+        <footer>
+            <p>Powered by AI • Supports multiple languages and file formats</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+    <script src="file-handler.js"></script>
+</body>
+</html>
