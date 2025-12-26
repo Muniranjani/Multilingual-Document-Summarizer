@@ -1,0 +1,6 @@
+This is a small test document for the summarizer.
+It contains multiple sentences. The summarizer should extract this text and return a concise summary.
+
+The quick brown fox jumps over the lazy dog. This sentence is just filler.
+
+End of test.

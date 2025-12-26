@@ -1,0 +1,1 @@
+﻿This is a test document. It contains multiple sentences. It should be summarized by the fallback summarizer. It also includes some extra text to ensure the summarizer can pick the first sentences.
